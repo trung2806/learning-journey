@@ -1,0 +1,128 @@
+cd ~/work/learning/learning-journal
+cat > daily/2026-05-28.md << 'EOF'
+# 2026-05-28 — Day 4 of Phase 1
+
+## Mục tiêu hôm nay
+- [X] NPA chương về data formats (Ch 4 hoặc Ch 8 tùy edition) — JSON/YAML/XML
+- [X] Reflection 3 câu Q1-Q3 (format ngắn, 3 câu mỗi câu, không essay)
+- [ ] Exercism: two-fer (string formatting) => chưa mở exercise đến
+- [X] Exercism: currency-exchange (numbers/floats)
+- [ ] Brainstorm mini-tool Tuần 3: outline 1 trang
+- [X] Commit + push
+
+## Đã làm
+- Đã đọc NPA chương 4
+- Đã xong các bài currency-exchange
+- đã xong các bài card-games, isbn-verifier ...
+
+## Reflection NPA chương data formats
+
+**Q1: Trong các vendor đã làm (Cisco ACI, Checkpoint, Cisco IOS classic), mỗi vendor expose data qua format nào? Format nào dễ tự động hóa nhất với portfolio của tôi?**
+(3 câu)
+- Cisco ACI: JSON, XML giao thức API, Checkpoint JSON, giao thức API, Cisco IOS Classic CLI giao thức telnet/ssh
+- JSON, tôi đọc khá tường minh và API cũng dễ hiểu hơn để thao tác
+- JSON dễ tự động hóa nhất
+
+**Q2: YAML thắng JSON cho human-edited config (Ansible, K8s, TF tfvars) dù JSON đơn giản hơn về spec. Vì sao? (Liên hệ với việc tôi sẽ phải viết playbook Checkpoint trong Tuần 24-25.)**
+(3 câu)
+- Ít syntactic noise: không có {}, [], "", dấu phẩy cuối dòng. Mắt người đọc 100 dòng K8s manifest YAML đỡ mệt hơn JSON tương đương 30-40%.
+- Comments JSON không có native comment. Cho config Checkpoint playbook, comment là bắt buộc để biết tại sao có rule này.
+- Anchors và references (& và *) cho DRY. Bạn sẽ dùng nhiều khi viết Ansible playbook cho 8 firewall giống nhau.
+
+**Q3: Customer Gov yêu cầu audit log long-term cho compliance NĐ 13/2023. JSON hay XML hay format khác? Trade-off về size, queryability, schema validation?**
+(3 câu)
+JSON thắng cho audit log long-term, 4 lý do: (a) NDJSON streaming-friendly cho log shipper (Filebeat, Fluentd), (b) ecosystem SIEM cả VN cả global đều JSON-native (Elastic ECS là chuẩn de facto), (c) gzip/zstd compress JSON đạt ratio 10-15x trên log thực tế, (d) JSON Schema đã đủ chín cho validation. XML thua về size (closing tags double bytes), queryability (XPath chậm hơn JSONPath/jq), và tooling modern.
+
+## Exercism notes
+
+### two-fer
+- Spec đọc xong hiểu chưa: 
+- Stuck ở đâu: 
+- Solution:
+```python
+def two_fer(name="you"):
+    return f"One for {name}, one for me."
+```
+- Học được gì về default arguments + f-string: 
+
+### currency-exchange
+- Spec: 
+- Stuck ở đâu: 
+- Solution chính (chỉ paste hàm cuối, không cần all):
+```python
+def exchange_money(budget, exchange_rate):
+    return budget / exchange_rate
+
+def get_change(budget, exchanged_value):
+    return budget - exchanged_value
+
+def get_value_of_bills(denomination, number_of_bills):
+    return denomination * number_of_bills
+
+def get_number_of_bills(amount, denomination):
+    return int(amount // denomination)
+
+def get_leftover_of_bills(amount, denomination):
+    return amount % denomination
+
+def exchangeable_value(budget, exchange_rate, spread, denomination):
+    exchanged = exchange_money(budget, exchange_rate * (1 + spread / 100))
+    return int(exchanged // denomination) * denomination
+```
+- Học được gì về float precision (vì sao kết quả tiền không nên dùng float trong production)?: 
+>>> 0.1 + 0.2
+0.30000000000000004
+>>> 0.1 + 0.2 == 0.3
+False
+
+Float IEEE 754 không biểu diễn chính xác được số thập phân cơ số 10. Trong production money:
+
+Hoặc dùng decimal.Decimal (chính xác nhưng chậm hơn float ~50x)
+Hoặc làm việc với integer cents/dong (1 triệu đồng = 1_000_000, không phải 1000000.00). Đây là cách core banking system làm.
+
+## Mini-tool Tuần 3 — brainstorm
+
+Tool: script đọc inventory YAML, ping/connect all devices, output table version + uptime.
+=> chưa hiểu đầu bài bạn muốn nói gì??
+
+**Input format (YAML draft):**
+```yaml
+devices:
+  - hostname: core-sw-01
+    ip: 10.0.0.1
+    platform: cisco_ios
+    role: core
+  - hostname: fw-perimeter-01
+    ip: 10.0.0.10
+    platform: checkpoint_gaia
+    role: firewall
+```
+
+**Output draft (markdown table):**
+
+Hostname IP Platform Reachable Version Uptime
+
+**Library candidates:**
+- ping: `subprocess` gọi system ping, hay `pythonping` lib
+- SSH: Netmiko (sẽ học Tuần 3 chính thức)
+- YAML parse: PyYAML
+
+**Risk nhìn trước:**
+- Chưa có lab thật → cần mock data hoặc dựng EVE-NG community / Containerlab
+- Checkpoint khác Cisco về SSH prompt → Netmiko có driver riêng (`checkpoint_gaia`)
+
+**Câu hỏi mở để tuần sau hỏi AI:**
+- Containerlab vs EVE-NG vs GNS3 cho ai có ACI experience: chọn cái nào lab nhanh nhất?
+- Mock device library nào tốt cho unit test sau này?
+
+## Kẹt ở đâu / câu hỏi mở
+- 
+
+## Mai (Day 5)
+- NPA chương Templates (Jinja2 intro nếu sách có, hoặc đọc Real Python Jinja2 tutorial)
+- Exercism: 2 bài (gợi ý: matrix, high-scores — luyện lists)
+- Refactor 1 bash script cũ của bạn sang Python (yêu cầu Tuần 2, kéo sớm)
+EOF
+
+code daily/2026-05-28.md
+

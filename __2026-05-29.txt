@@ -1,0 +1,139 @@
+# 2026-05-29 — Day 5 of Phase 1
+
+## Mục tiêu hôm nay
+- [X] Clear nợ Day 4: two-fer
+- [X] Exercism: matrix
+- [X] Exercism: high-scores
+- [X] Đọc + hiểu spec mini-tool device-check
+- [X] Refactor 1 bash script sang Python (check_hosts hoặc của bạn)
+- [X] Jinja2 skim 30 phút + lab nhỏ
+- [X] Commit + push
+
+## Đã làm
+- đọc spec mini-tool
+- refactor check_hosts
+- Jinja2 skil
+- đã commit
+
+## Exercism notes
+- 
+### two-fer
+- Solution: def two_fer(name="you"):
+    return f"One for {name}, one for me."
+- Học được về default argument: nếu không có trong danh sách, thì chọn " "
+
+### matrix
+- Stuck ở đâu (nếu có): 
+- Solution: 
+class Matrix:
+    def __init__(self, matrix_string):
+        """Khởi tạo ma trận từ một chuỗi văn bản."""
+        # 1. Tách chuỗi thành các dòng bằng dấu xuống dòng '\n'
+        # 2. Với mỗi dòng, tách các con số bằng khoảng trắng ' ' và chuyển chúng thành kiểu int
+        self.matrix = [
+            [int(number) for number in line.split()]
+            for line in matrix_string.split('\n')
+        ]
+
+    def row(self, index):
+        """Trả về hàng thứ index (chỉ số bắt đầu từ 1)."""
+        # Vì list trong Python bắt đầu từ 0, nên hàng thứ `index` sẽ nằm ở vị trí `index - 1`
+        return self.matrix[index - 1]
+
+    def column(self, index):
+        """Trả về cột thứ index (chỉ số bắt đầu từ 1)."""
+        # Duyệt qua từng hàng, lấy ra phần tử ở vị trí `index - 1` của hàng đó
+        return [row[index - 1] for row in self.matrix]
+- Học được: cách tương tác với bảng, tạo bảng, xuất dữ liệu 
+
+### high-scores
+- Solution: class HighScores:
+    def __init__(self, scores):
+        """Khởi tạo đối tượng với một danh sách điểm số (list[int])."""
+        self.scores = scores
+
+    def scores_list(self):
+        """Trả về toàn bộ danh sách điểm số."""
+        return self.scores
+
+    def latest(self):
+        """Trả về điểm số mới nhất (phần tử cuối cùng của danh sách)."""
+        return self.scores[-1]
+
+    def personal_best(self):
+        """Trả về điểm số cao nhất."""
+        return max(self.scores)
+
+    def personal_top_three(self):
+        """Trả về danh sách 3 điểm số cao nhất, sắp xếp giảm dần."""
+        # 1. Sắp xếp danh sách từ lớn đến bé bằng sorted(..., reverse=True)
+        # 2. Dùng slice [:3] để lấy 3 phần tử đầu tiên
+        return sorted(self.scores, reverse=True)[:3]
+- Học được: cách dùng latest, max (min) sorted 
+
+## Bash refactor
+- Script đã chọn: check_host
+- 3 pattern Python làm tốt hơn bash mà tôi nhận ra:
++ bash thiên về string và dễ lỗi khi chạy, python có nhiều cấu trúc hơn
++ Khả năng kiểm soát lỗi và luồng của python tốt hơn
++ Python có các thư viện để làm việc hiệu quả hơn
+- Code cuối: #!/usr/bin/env python3
+"""Ping a list of hosts from a file and report status."""
+import argparse
+import subprocess
+import sys
+from pathlib import Path
+
+
+def ping(ip: str, timeout: int = 2) -> bool:
+    """Return True if host responds to a single ICMP ping."""
+    result = subprocess.run(
+        ["ping", "-c", "1", "-W", str(timeout), ip],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+    return result.returncode == 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Ping a list of hosts.")
+    parser.add_argument("hosts_file", type=Path, help="File with 1 IP per line")
+    args = parser.parse_args()
+
+    if not args.hosts_file.exists():
+        print(f"Error: {args.hosts_file} not found", file=sys.stderr)
+        return 1
+
+    for line in args.hosts_file.read_text().splitlines():
+        ip = line.strip()
+        if not ip or ip.startswith("#"):
+            continue
+        status = "UP" if ping(ip) else "DOWN"
+        print(f"{ip} {status}")
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+## Jinja2 skim
+- 3 ý chính: cài jinja2, khởi tạo môi trường
++ Jinja2 cho phép tạo các template theo cấu trúc
++ Jinja2 tương thích với các hệ thống network
+- Lab nhỏ chạy được chưa: được rồi
+- Use case sắp tới tôi sẽ dùng: template cấu hình switch, router 
+
+## Mini-tool device-check
+- Đã đọc spec, hiểu chưa: hiểu rồi
+- Câu hỏi còn lại (nếu có): 
+
+## Kẹt ở đâu / câu hỏi mở
+- Sau 5 ngày, tôi thấy exercism của tôi đang không tìm thấy các bài bạn đưa => hãy kiểm tra
+- Tôi thấy tôi khá mất thời gian để làm code, thường thì khá lâu, tôi cảm thấy chưa có bước đệm khi chuyển sang code, cảm thấy các thuật ngữ, ý nghĩa của các từ chưa hiểu rõ => tôi mong muốn có 1 bảng đẻ hiểu thuật ngữ này là gì, ví dụ, cách dùng
+
+## Mai (Day 6 — Thứ Bảy, tận dụng 5h)
+- Bash refactor script thứ 2 (1 cái khác phức tạp hơn)
+- Exercism: 2 bài về dict (gợi ý: nucleotide-count, reverse-string nếu chưa xong loop)
+- NPA: chỉ tiếp tục nếu đã clear hết Exercism backlog
+- Bắt đầu phác họa code mini-tool device-check (chưa cần chạy được)

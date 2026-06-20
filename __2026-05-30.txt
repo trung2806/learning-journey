@@ -1,0 +1,179 @@
+cd ~/work/learning/learning-journal
+cat > daily/2026-05-30.md << 'EOF'
+# 2026-05-30 — Day 6 of Phase 1 (Thứ Bảy, 5h)
+
+## Mục tiêu hôm nay
+- [X] Fix workflow Exercism: chỉ làm bài đã unlock, lấy lệnh download từ trang bài
+- [X] Exercism: Inventory Management
+- [X] Exercism: etl (hoặc bài dict unlocked tương đương)
+- [X] device-check: dựng skeleton chạy được phần ping, thêm 1 cột tự làm (role)
+- [ ] Bash refactor #2 (script phức tạp hơn: loop + điều kiện + lệnh ngoài)
+- [X] Commit + push
+
+## Đã làm
+- Đã fix xong workflow
+- đã hoàn thành 2 bài execism
+- đã hoàn thành đọc file device-check : hiểu đc cách lấy dữ liệu đầu vào, gán vào từng hàm, in ra, nhìn vào bài thì có vẻ sau này sẽ thực hiện ssh tới thiết bị với ip cho vào câu lệnh ssh như ping, sau đó get các thông tin từ thiết bị về, in ra bảng theo mẫu đã tạo
+- commit và push
+
+## Exercism notes
+### <bài 1>Inventory management
+- Spec hiểu sau bao lâu: 30 phút
+- Stuck ở đâu: lúc đầu có nhầm lẫn giữa items và item, 
+- Học được về dict: cách đếm số lists, thêm, sửa, xóa và in ra sau khi hoàn thành 
+- Solution:
+"""Functions to keep track and alter inventory."""
+def create_inventory(items):
+    """Create a dict that tracks the amount (count) of each element on the `items` list.
+ 
+    Parameters:
+        items (list): Items to create an inventory from.
+ 
+    Returns:
+        dict: The inventory dictionary.
+    """
+from collections import Counter
+
+
+def create_inventory(items):
+    return dict(Counter(items))
+
+
+def add_items(inventory, items):
+    """Add or increment items in inventory using elements from the items `list`.
+ 
+    Parameters:
+        inventory (dict): Dictionary of existing inventory.
+        items (list): List of items to update the inventory with.
+ 
+    Returns:
+        dict: The inventory updated with the new items.
+    """
+    return {**inventory, **{item: inventory.get(item, 0) + items.count(item) for item in items}}
+def decrement_items(inventory, items):
+    """Decrement items in inventory using elements from the `items` list.
+ 
+    Parameters:
+        inventory (dict): Inventory dictionary.
+        items (list): List of items to decrement from the inventory.
+ 
+    Returns:
+        dict: Updated inventory with items decremented.
+    """
+    result = {}
+    for item, count in inventory.items():
+        new_count = count - items.count(item)
+        result[item] = max(new_count, 0)
+    return result
+def remove_item(inventory, item):
+    """Remove item from inventory if it matches `item` string.
+ 
+    Parameters:
+        inventory (dict): Inventory dictionary.
+        item (str): Item to remove from the inventory.
+ 
+    Returns:
+        dict: Updated inventory with item removed. Current inventory if item does not match.
+    """
+    if item in inventory:
+        del inventory[item]
+    return inventory
+def list_inventory(inventory):
+    """Create a list containing only available (item_name, item_count > 0) pairs in inventory.
+ 
+    Parameters:
+        inventory (dict): An inventory dictionary.
+ 
+    Returns:
+        list[tuple]: List of key, value tuples from the inventory dictionary.
+    """
+    return [(item, count) for item, count in inventory.items() if count > 0]
+
+### <bài 2> ETL 
+- Stuck ở đâu: lúc đầu chạy lặp theo legacy_data nhưng không được, sau đọc log thì thấy cần 1 dạng trung gian (tôi ko biết nhiều thuật       để mô tả chỉnh xác) để gom dữ liệu, sau khi đọc hint thì hiểu hơn
+- Học được về dict: tạo thêm new_data để đưa kết quả in ra
+- Solution:
+def transform(legacy_data):
+    ### chuyen du lieu tu dang diem:chu cai sang chu cai:diem ###
+    new_data = {}
+    ### lap qua cac cap diem va chu cai trong legacy_data###
+    for score, letters in legacy_data.items():
+        for letter in letters:
+            new_data[letter.lower()] = score
+    return new_data
+
+## device-check
+- Skeleton chạy được phần ping chưa: đã chạy đc ping ( do làm trên laptop nên chỉ ping đúng máy mình)
+- Tự thêm cột role có khó không, vướng ở đâu: chưa đủ phần dựng thêm nên chưa biết thêm thông tin gì, tôi dự định tạo thêm cột role về performance như CPU memory qua show cpu (cisco), tuy nhiên không biết sau khi ssh thì làm gì, nên sẽ chờ tuần 3 để hiểu rõ thêm
+- Hiểu vì sao tách build_row / print_markdown_table riêng không: vì khi print thì các dòng sẽ khó nhìn, khi build row thì sẽ tạo thành các bảng, theo các trường đã tạo, dễ quan sát cho con người, sau có thể tìm kiếm, đếm, max, min...
+- tôi thử như thế này
+def get_cpu(device:dict) -> str:
+    """TODO Tuần 3: parse uptime từ output Netmiko. Tạm '-'."""
+    return "-"
+
+def build_row(device: dict) -> dict:
+    """Probe 1 device, trả về dict các cột cho bảng."""
+    reachable = ping(device["ip"])
+    return {
+        "hostname": device["hostname"],
+        "ip": device["ip"],
+        "platform": device.get("platform", "-"),
+        "reachable": "yes" if reachable else "no",
+        "version": get_version(device) if reachable else "-",
+        "uptime": get_uptime(device) if reachable else "-",
+	"cpu_percent": get_cpu(device) if reachable else "-",
+    }
+def print_markdown_table(rows: list[dict]) -> None:
+    """In rows ra Markdown table."""
+    headers = ["hostname", "ip", "platform", "reachable", "cpu_percent", "version", "uptime"]
+    print("| " + " | ".join(headers) + " |")
+    print("| " + " | ".join("---" for _ in headers) + " |")
+    for row in rows:
+        print("| " + " | ".join(str(row[h]) for h in headers) + " |")
+
+## Bash refactor #2
+- Script đã chọn: df
+- 3 pattern Python làm tốt hơn:
+- Code cuối:
+#!/usr/bin/env python3
+"""Check disk usage of mount points against a threshold."""
+import sys
+import shutil
+
+
+def main() -> int:
+    threshold = int(sys.argv[1]) if len(sys.argv) > 1 else 80
+    mount_points = ["/", "/home", "/var", "/boot"]
+
+    print(f"--- Kiểm tra phân vùng vượt ngưỡng {threshold}% ---")
+    has_warning = False
+
+    for path in mount_points:
+        try:
+            total, used, free = shutil.disk_usage(path)
+        except FileNotFoundError:
+            print(f"Bỏ qua: {path} không tồn tại")
+            continue
+
+        percent_used = used / total * 100
+        if percent_used > threshold:
+            print(f"Cảnh báo: {path} đang dùng {percent_used:.1f}%")
+            has_warning = True
+
+    if not has_warning:
+        print("Tất cả phân vùng đều an toàn.")
+    return 1 if has_warning else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+## Kẹt ở đâu / câu hỏi mở
+- tôi phải đi google import thư viện nào vì ko hiểu phần thư viện
+
+## Mai (Day 7 — Chủ Nhật)
+- Hoàn thiện device-check phần còn lại / clear backlog Exercism
+- Writing block (Chủ Nhật theo template 20h): note 1 đoạn cho blog #1 sau này
+EOF
+
+code daily/2026-05-30.md

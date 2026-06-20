@@ -1,0 +1,116 @@
+cd ~/work/learning/learning-journal
+cat > daily/2026-06-01.md << 'EOF'
+# 2026-06-01 — Day 8 of Phase 1 (Thứ Hai, tuần 2, 2h tối)
+
+## Mục tiêu hôm nay
+- [X] Blank-file rep: 2 bài Exercism, đọc test trước, không AI (bob + isogram; acronym/nucleotide-count chưa tìm thấy)
+- [X] device-check: viết 1 unit test pytest cho build_row (mock ping trả True)
+- [X] Bash refactor #3: parse auth.log, đếm IP "Failed password", top 5
+- [X] Áp nghi thức 4 bước trước khi code (chốt cho tuần 2)
+- [X] Commit + push
+
+## Đã làm
+- bob + isogram: pass test, tự code không AI
+- device-check: test pytest cho build_row, mock ping, pass
+- bash #3: tool đếm IP từ log bằng re + Counter, output đúng
+- acronym + nucleotide-count chưa thấy trong track (chưa unlock?), để Day 9
+- commit + push
+
+## Nghi thức 4 bước (1 điều đổi cho tuần 2)
+Sửa friction "mông lung khi chuyển sang code":
+1. Đọc test → tìm tên hàm, tham số, kiểu trả về
+2. Signature rỗng + docstring 1 câu
+3. Comment 2-3 dòng tiếng Việt: nhận gì, làm gì, trả gì
+4. Mới code, lấp dần comment
+Tín hiệu: mông lung = đang kẹt bước 1-3, không phải bước 4.
+
+## Exercism notes
+
+### bob
+- Đọc test trước: có
+- Solution (bản đã nộp):
+def response(hey_bob):
+    if hey_bob.endswith('?') and hey_bob.isupper():
+        return "Calm down, I know what I'm doing!"
+    if hey_bob.isupper():
+        return 'Whoa, chill out!'
+    if hey_bob.endswith('?') or hey_bob.endswith('?   '):
+        return 'Sure.'
+    if hey_bob.strip() == '':
+        return 'Fine. Be that way!'
+    return 'Whatever.'
+- Pass test: có, NHƯNG dùng hack '?   ' (đúng 3 space) để qua 1 case. Fragile.
+- ĐÃ REFACTOR (bản mới, dùng strip-first, bỏ hack):
+def response(hey_bob):
+    text = hey_bob.strip()
+    if not text:
+        return 'Fine. Be that way!'
+    question = text.endswith('?')
+    yelling = text.isupper()
+    if yelling and question:
+        return "Calm down, I know what I'm doing!"
+    if yelling:
+        return 'Whoa, chill out!'
+    if question:
+        return 'Sure.'
+    return 'Whatever.'
+- Bài học: chuẩn hóa input ở cửa vào, đừng vá theo từng test case.
+
+### isogram
+- Solution:
+def is_isogram(string):
+    if not string:
+        return True
+    string = string.lower()
+    for i in range(len(string)):
+        if string[i].isalpha() and string[i] in string[i + 1:]:
+            return False
+    return True
+- Pass test: có
+- Học được: .isalpha() lọc hyphen/space, .lower() cho case-insensitive
+- Cách Pythonic hơn (note dùng sau): dùng set, O(n) thay vì O(n^2)
+  letters = [c.lower() for c in string if c.isalpha()]
+  return len(letters) == len(set(letters))
+
+## device-check
+- Test pytest build_row: pass
+- mock: patch("device_check.ping", return_value=True)
+- Hiểu: patch ở nơi ping ĐƯỢC DÙNG (module device_check), không phải nơi định nghĩa gốc
+- get_version/uptime/cpu còn stub "-" nên chưa cần mock; tuần 3 SSH thật sẽ mock thêm
+
+## Bash refactor #3 — log parser
+- Script: parse auth.log, đếm IP "Failed password", top 5
+- re + collections.Counter.most_common(5)
+- Output đúng: 192.168.1.10:6, .5:2, .20:1, .30:1
+- Bản đã sửa (guard None cho log thật):
+import re
+from collections import Counter
+
+def get_top_ips(log_file, top_n=5):
+    ip_pattern = re.compile(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}')
+    counter = Counter()
+    with open(log_file) as f:
+        for line in f:
+            if "Failed password" not in line:
+                continue
+            match = ip_pattern.search(line)
+            if match:
+                counter[match.group()] += 1
+    return counter.most_common(top_n)
+- Issue gốc: .search().group() crash khi dòng không có IP (None). Mock thì OK, log thật phải guard.
+- Synthesis str + dict + lặp + đọc file + regex, đúng thói quen CLI muốn build (Day 3: log/grep)
+
+## Kẹt ở đâu / câu hỏi mở
+- acronym + nucleotide-count chưa thấy trong track, cần check unlock
+- vẫn muốn thử config gen Cisco IOS (VLAN + interface vlan) bằng Python/Jinja2, áp dụng thực tế
+
+## Tuần 2 progress
+- Bash refactor: 3/5 (check_host, df, log parser)
+
+## Mai (Day 9 — Thứ Ba, 2h tối)
+- Exercism: nucleotide-count (dict + raise) nếu tìm được, không thì pangram (set)
+- Stretch: Jinja2 sinh config Cisco IOS VLAN + interface vlan từ dict/YAML, render ra string, chưa cần thiết bị
+- Bash refactor #4 nếu còn giờ (lên 4/5 tuần 2)
+EOF
+
+code daily/2026-06-01.md

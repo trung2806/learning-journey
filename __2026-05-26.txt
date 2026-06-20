@@ -1,0 +1,24 @@
+# 2026-05-26 — Day 2 of Phase 1
+## Mục tiêu hôm nay 
+- [X ] NPA Chapter 2 reflection (3 câu Q1-Q3) 
+- [ ] Exercism: lasagna (làm lại theo workflow đọc stub + test) 
+- [ ] Exercism: leap (tự code, không AI) 
+- [ ] Exercism: reverse-string (2 cách: slice và loop) 
+- [X ] Commit + push journal
+## Đã làm - npa chap 2 - exercism 1 số bài, các bài bạn đưa ko download đc, có lẽ hơi cũ (6bài về inter và boolan) - đã commit và push
+## Reflection NPA Chapter 2
+ **Q1: 6 loại automation, loại nào ROI cao nhất / thấp nhất với SI của tôi?** 
+Cao nhất là compliance + config management, vì đó là việc lặp lại trên scale lớn và có audit pressure từ Gov customer. Thấp nhất là provision vì việc tích hợp các hệ thống như gov có nhiều sản phẩm, cả cũ mới, rất khó và ROI thấp
+**Q2: Threshold giữa scripting và automation là gì?** automation là 1 hệ thống, có trung tâm điều khiển, kết quả ổn định còn scripting thì là công cụ
+**Q3: Single source of truth ở Gov VN thực tế nằm đâu? Gap?** Vấn đề về con người khi nhân sự ở các gov thường mỏng, yếu, BCA luân chuyển phòng, đổi vị trí rất nhiều, dẫn đến nhân sự quản lý hệ thống, có thông tin và hiểu kỹ thuật ít. Ngoài ra còn về tài liệu không được chuẩn hóa, cập nhật và kiểm tra lại=> GAP lớn
+## Exercism notes ### lasagna - Đã pass test chưa: đã - Khó ở chỗ nào: tôi chưa đọc readme, sau khi đọc đã hoàn thành - Học được gì về docstring / constant / pytest: đọc được output khi pytest sai ở đâu, thiếu hoặc khai báo nhầm thông tin, hàm nào
+### leap - Đã pass test chưa: chưa tải đc bài - Edge case nào suýt miss (1900? 2000? 2024?): 
+### reverse-string - Cách Pythonic (slice): - Cách loop: - Cách nào readable hơn theo bạn:
+## Kẹt ở đâu / câu hỏi mở 
+- chưa tải được các bài bạn nói do thay đổi cấu trúc của exercism
+- chưa thấy bản output chạy thật mà mới chỉ làm test nên khó hình dung output
+## Mai (Day 3) - NPA Chapter 3 bắt đầu (Linux foundations) 
+ - Exercism: 2-tracks-baking-time (variation của lasagna), ditty-of-the-day hoặc bài tiếp theo trong track 
+- Journal Day 3 EOF
+
+code daily/2026-05-26.md

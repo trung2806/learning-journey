@@ -1,0 +1,50 @@
+cd ~/work/learning/learning-journal
+cat > daily/2026-05-31.md << 'EOF'
+# 2026-05-31 — Day 7 of Phase 1 (Chủ Nhật, 5h — writing day + đóng tuần 1)
+
+## Mục tiêu hôm nay
+- [X] device-check: chạy end-to-end với inventory.yaml mock (ping thật, chưa SSH)
+- [X] Clear backlog Exercism còn lại trong list tuần 1
+- [ ] Writing block 2h: 1 đoạn raw material cho blog #1 (không publish) => ko hiểu yeye cầu
+- [X] Week 1 retro: tự chấm, ghi 1 điều đổi cho tuần 2
+- [X] Sửa lỗi import trong bài Inventory Management
+- [X] Commit + push
+
+## Đã làm
+- đã chạy xong end-to-end device-check
+- xử lý toàn bộ exercism trong tuần 1
+- week 1: tự chấm 5/10, cơ bản là loay hoay, còn khá là mông lung
+- Đã sửa lỗi import
+
+## Week 1 retrospective
+**Đạt vs roadmap tuần 1:**
+**Làm sớm hơn lịch:**
+**Friction lặp lại 6 ngày:**
+**1 điều đổi cho tuần 2:**
+
+## Writing block — raw material blog #1
+(Dự kiến: "Từ 15 năm CLI đến Python: đóng gap code ở tuổi 40")
+- Hook (tư duy imperative): tư duy cấu hình CLI thành tư duy cấu hình tập trung, cấu hình bash sang cấu hình python (có class, có hàm ...)
+- Khoảnh khắc cụ thể tuần này: hình dung "automation" trong network
+- Insight từ bash->Python refactor: cảm thấy python làm được nhiều hơn bash vì có nhiều thư viện hơn, ônr định hơn, khả năng mở rộng và chạy đc trên cả window lẫn linux
+- Cảm giác phải google "import": hơi mơ hồ, cần 1 tài liệu nào đó hoặc trang nào đó như 1 phụ lục, như 1 refer các thuật ngữ, các thư viện ...
+
+## device-check
+- Chạy end-to-end với mock chưa: ? tôi ko hiểu í bạn, tôi chạy end to end device check với mạng wifi, 
+- inventory.yaml trỏ IP nào: IP trong mạng wifi của tôi, kiểm tra các máy tính trong mạng tôi
+- Vướng ở đâu: ping nhưng 1 số PC trong mạng bật firewall nên unreachable
+
+## Exercism notes
+- cần làm thêm về str, dict , các hàm lặp, cách lấy các thông tin cần thiết
+- tính băng thông theo B/b Mb/MB
+
+## Kẹt ở đâu / câu hỏi mở
+- kẹt ở áp dụng vào thực tế, trước giờ tôi cấu hình theo cli, nên sang tuần tôi muốn thử cấu hình 1 đoạn tạo vlan, ip trên interface vlan của thiết bị cisco ios theo python
+
+## Mai (Day 8 — Thứ Hai, tuần 2, 2h tối)
+- Blank-file rep: 2 bài Exercism, ĐỌC TEST trước, KHÔNG mở AI, chấp nhận stuck 30 phút
+- device-check: viết 1 unit test pytest cho build_row (mock ping trả True)
+- Refactor bash script #3 (đang ở 2/5 của yêu cầu tuần 2)
+EOF
+
+code daily/2026-05-31.md
