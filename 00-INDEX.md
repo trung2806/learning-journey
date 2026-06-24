@@ -2,7 +2,9 @@
 
 > File định hướng. Đọc trước ở mỗi cuộc mới. Mục đích: nói rõ track nào đang chạy, track nào đang đỗ, và file nào là source of truth cho từng việc, để không trộn nhầm hai track ở khâu retrieval.
 
-Cập nhật: 2026-06-16.
+Cập nhật: 2026-06-24.
+
+**Nhật ký Infra mới nhất: `2026-06-24-02.md` (Day 32, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste (`git clone ... && git log -1 && pytest -q`), không đọc con số ở file này.
 
 ## Hai track, một vòng cung sự nghiệp
 
@@ -31,7 +33,7 @@ Quy ước mặc định: khi nói "phase 1", "bước tiếp theo", "hôm nay h
 ## Convention đặt tên (áp dụng đi tới)
 
 - File AI Sec: prefix `aisec-*`.
-- File AI Infra: prefix `infra-*` khi tạo mới. Nhật ký giữ định dạng ngày `YYYY-MM-DD.md` cho gọn.
+- File AI Infra: prefix `infra-*` khi tạo mới. Nhật ký giữ định dạng ngày `YYYY-MM-DD.md` cho gọn; nhiều phiên cùng ngày thêm hậu tố `-NN` (`2026-06-24.md` là Day 31, `2026-06-24-02.md` là Day 32).
 - Mọi nhật ký phải có ngày trong tên file.
 
 ## Ba lớp tài liệu AI Sec (vì sao tách, không gộp làm một)
@@ -55,3 +57,7 @@ Gộp ba lớp này vào một file sẽ bắt churn của lịch đụng vào k
 - `REFERENCE-ai-security-career-roadmap.md`
 - `ai-security-learning-plan.md`
 - `senior-security-ai-mentor-roadmap.md`
+
+## Đã thay đổi 2026-06-24 (Infra trunk, Day 31-32)
+
+Phase 1 `srl-monitor`: live netmiko transport validated end-to-end trên SR Linux container thật (Day 31), envelope confirm flat trên device, `control_A.json` thay bản trim 941B bằng capture full-fidelity thật qua tee (Day 32). Re-pin toàn bộ test real-capture sang fixture-derived (miễn drift), synthetic giữ pin cứng. Baseline 40 green. Repo code public `github.com/trung2806/srl-monitor`. STATE chi tiết ở nhật ký mới nhất, không nhân đôi ở đây.
