@@ -2,9 +2,9 @@
 
 > File định hướng. Đọc trước ở mỗi cuộc mới. Mục đích: nói rõ track nào đang chạy, track nào đang đỗ, và file nào là source of truth cho từng việc, để không trộn nhầm hai track ở khâu retrieval.
 
-Cập nhật: 2026-06-24.
+Cập nhật: 2026-06-26.
 
-**Nhật ký Infra mới nhất: `2026-06-24-02.md` (Day 32, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste (`git clone ... && git log -1 && pytest -q`), không đọc con số ở file này.
+**Nhật ký Infra mới nhất: `2026-06-26.md` (Day 34, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste chạy qua WSL2 (`wsl.exe -- bash -lc "git clone ... && git log -1 && python3 -m pytest -q"`) — máy Windows host không có Python thật. Không đọc con số ở file này.
 
 ## Hai track, một vòng cung sự nghiệp
 
