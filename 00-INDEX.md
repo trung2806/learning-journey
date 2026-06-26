@@ -60,7 +60,7 @@ Gộp ba lớp này vào một file sẽ bắt churn của lịch đụng vào k
 
 ## Đã thay đổi 2026-06-26 (Infra trunk, Day 35)
 
-`tick()` Functional Core extract ra khỏi `main_loop()` — pure function, 5 inject (raw_data, past_state, current_time, thresholds, cooldown_seconds), trả (alerts, next_state). `main_loop()` refactor thành Imperative Shell thuần. `dummy_fetcher()` biến thiên 3-phase via `_LOOP_COUNTER` — demo đủ TRIGGERED → REPEATED → RECOVERED. `test_tick.py` — 2 green, chạy 0.02s (không cần sleep thật). Commit [TBD], cập nhật sau ritual.
+`tick()` Functional Core extract ra khỏi `main_loop()` — pure function, 5 inject (raw_data, past_state, current_time, thresholds, cooldown_seconds), trả (alerts, next_state). `main_loop()` refactor thành Imperative Shell thuần. `dummy_fetcher()` biến thiên 3-phase via `_LOOP_COUNTER` — demo đủ TRIGGERED → REPEATED → RECOVERED. `test_tick.py` — 2 green, chạy 0.02s (không cần sleep thật). Commit `1205e7a`, 53 green.
 
 ## Đã thay đổi 2026-06-24 (Infra trunk, Day 31-32)
 
