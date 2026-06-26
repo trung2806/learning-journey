@@ -4,7 +4,7 @@
 
 Cập nhật: 2026-06-26.
 
-**Nhật ký Infra mới nhất: `2026-06-26-02.md` (Day 35, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste chạy qua WSL2 (`wsl.exe -- bash -lc "git clone ... && git log -1 && python3 -m pytest -q"`) — máy Windows host không có Python thật. Không đọc con số ở file này.
+**Nhật ký Infra mới nhất: `2026-06-26-03.md` (Day 36, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste chạy qua WSL2 (`wsl.exe -- bash -lc "git clone ... && git log -1 && python3 -m pytest -q"`) — máy Windows host không có Python thật. Không đọc con số ở file này.
 
 ## Hai track, một vòng cung sự nghiệp
 
@@ -57,6 +57,10 @@ Gộp ba lớp này vào một file sẽ bắt churn của lịch đụng vào k
 - `REFERENCE-ai-security-career-roadmap.md`
 - `ai-security-learning-plan.md`
 - `senior-security-ai-mentor-roadmap.md`
+
+## Đã thay đổi 2026-06-26 (Infra trunk, Day 36)
+
+SIGTERM graceful-stop: `_stop_event = threading.Event()` module-level; `sigterm_handler` chỉ `set()` (Async-Signal Safe); `signal.signal` cho SIGTERM + SIGINT; `while not _stop_event.is_set()` + `_stop_event.wait(timeout)` thay `while True` + `time.sleep()`; `finally` cleanup. `test_sigterm.py` 2 green. Commit `b70f2ef`, 55 green total.
 
 ## Đã thay đổi 2026-06-26 (Infra trunk, Day 35)
 
