@@ -4,7 +4,7 @@
 
 Cập nhật: 2026-06-26.
 
-**Nhật ký Infra mới nhất: `2026-06-26-03.md` (Day 36, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste chạy qua WSL2 (`wsl.exe -- bash -lc "git clone ... && git log -1 && python3 -m pytest -q"`) — máy Windows host không có Python thật. Không đọc con số ở file này.
+**Nhật ký Infra mới nhất: `2026-06-26-04.md` (Day 37, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste chạy qua WSL2 (`wsl.exe -- bash -lc "git clone ... && git log -1 && python3 -m pytest -q"`) — máy Windows host không có Python thật. Không đọc con số ở file này.
 
 ## Hai track, một vòng cung sự nghiệp
 
@@ -57,6 +57,10 @@ Gộp ba lớp này vào một file sẽ bắt churn của lịch đụng vào k
 - `REFERENCE-ai-security-career-roadmap.md`
 - `ai-security-learning-plan.md`
 - `senior-security-ai-mentor-roadmap.md`
+
+## Đã thay đổi 2026-06-26 (Infra trunk, Day 37)
+
+Externalize threshold: `load_thresholds(filepath)` — JSON + 3-lớp validation (dict check, required keys, int+bool+range per value) + whitelist return; `main_loop(config_path)` Fail-Fast trước while, re-raise cho entrypoint; `if __name__` xử lý sys.argv + sys.exit(1); `thresholds.json`; `test_load_thresholds.py` 5 green (tmp_path fixture). Commit `b5f4b96`, 60 green total.
 
 ## Đã thay đổi 2026-06-26 (Infra trunk, Day 36)
 
