@@ -4,7 +4,7 @@
 
 Cập nhật: 2026-06-26.
 
-**Nhật ký Infra mới nhất: `2026-06-26.md` (Day 34, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste chạy qua WSL2 (`wsl.exe -- bash -lc "git clone ... && git log -1 && python3 -m pytest -q"`) — máy Windows host không có Python thật. Không đọc con số ở file này.
+**Nhật ký Infra mới nhất: `2026-06-26-02.md` (Day 35, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste chạy qua WSL2 (`wsl.exe -- bash -lc "git clone ... && git log -1 && python3 -m pytest -q"`) — máy Windows host không có Python thật. Không đọc con số ở file này.
 
 ## Hai track, một vòng cung sự nghiệp
 
@@ -57,6 +57,10 @@ Gộp ba lớp này vào một file sẽ bắt churn của lịch đụng vào k
 - `REFERENCE-ai-security-career-roadmap.md`
 - `ai-security-learning-plan.md`
 - `senior-security-ai-mentor-roadmap.md`
+
+## Đã thay đổi 2026-06-26 (Infra trunk, Day 35)
+
+`tick()` Functional Core extract ra khỏi `main_loop()` — pure function, 5 inject (raw_data, past_state, current_time, thresholds, cooldown_seconds), trả (alerts, next_state). `main_loop()` refactor thành Imperative Shell thuần. `dummy_fetcher()` biến thiên 3-phase via `_LOOP_COUNTER` — demo đủ TRIGGERED → REPEATED → RECOVERED. `test_tick.py` — 2 green, chạy 0.02s (không cần sleep thật). Commit [TBD], cập nhật sau ritual.
 
 ## Đã thay đổi 2026-06-24 (Infra trunk, Day 31-32)
 
