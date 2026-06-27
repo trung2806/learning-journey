@@ -2,9 +2,9 @@
 
 > File định hướng. Đọc trước ở mỗi cuộc mới. Mục đích: nói rõ track nào đang chạy, track nào đang đỗ, và file nào là source of truth cho từng việc, để không trộn nhầm hai track ở khâu retrieval.
 
-Cập nhật: 2026-06-26.
+Cập nhật: 2026-06-27.
 
-**Nhật ký Infra mới nhất: `2026-06-26-04.md` (Day 37, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste chạy qua WSL2 (`wsl.exe -- bash -lc "git clone ... && git log -1 && python3 -m pytest -q"`) — máy Windows host không có Python thật. Không đọc con số ở file này.
+**Nhật ký Infra mới nhất: `2026-06-27.md` (Day 38, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste chạy qua WSL2 (`wsl.exe -- bash -lc "git clone ... && git log -1 && python3 -m pytest -q"`) — máy Windows host không có Python thật. Không đọc con số ở file này.
 
 ## Hai track, một vòng cung sự nghiệp
 
@@ -57,6 +57,10 @@ Gộp ba lớp này vào một file sẽ bắt churn của lịch đụng vào k
 - `REFERENCE-ai-security-career-roadmap.md`
 - `ai-security-learning-plan.md`
 - `senior-security-ai-mentor-roadmap.md`
+
+## Đã thay đổi 2026-06-27 (Infra trunk, Day 38)
+
+`main_loop()` migrate sang async: `asyncio.Event` + `loop.add_signal_handler` + `asyncio.TaskGroup` fan-out N node + `state_registry` per-node isolation + `asyncio.wait_for` tighter sleep; `poll_node()` asyncssh transport — `known_hosts=None`, `connect_timeout=3`, fallback dict; `test_main.py` 2 async test + 1 fix. 62 green total, 8.62s. Commit `95a656a`.
 
 ## Đã thay đổi 2026-06-26 (Infra trunk, Day 37)
 
