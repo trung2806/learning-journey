@@ -2,9 +2,9 @@
 
 > File định hướng. Đọc trước ở mỗi cuộc mới. Mục đích: nói rõ track nào đang chạy, track nào đang đỗ, và file nào là source of truth cho từng việc, để không trộn nhầm hai track ở khâu retrieval.
 
-Cập nhật: 2026-06-27.
+Cập nhật: 2026-06-28.
 
-**Nhật ký Infra mới nhất: `2026-06-27.md` (Day 38, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste chạy qua WSL2 (`wsl.exe -- bash -lc "git clone ... && git log -1 && python3 -m pytest -q"`) — máy Windows host không có Python thật. Không đọc con số ở file này.
+**Nhật ký Infra mới nhất: `2026-06-28.md` (Day 39, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste chạy qua WSL2 (`wsl.exe -- bash -lc "git clone ... && git log -1 && python3 -m pytest -q"`) — máy Windows host không có Python thật. Không đọc con số ở file này.
 
 ## Hai track, một vòng cung sự nghiệp
 
@@ -57,6 +57,10 @@ Gộp ba lớp này vào một file sẽ bắt churn của lịch đụng vào k
 - `REFERENCE-ai-security-career-roadmap.md`
 - `ai-security-learning-plan.md`
 - `senior-security-ai-mentor-roadmap.md`
+
+## Đã thay đổi 2026-06-28 (Infra trunk, Day 39)
+
+`poll_node` refactor thành Raw Fetcher thuần (không except). `safe_poll_node` = Layer 1 Transport Boundary, 2-nhánh except tách biệt operational (OSError→ERROR+unreachable) vs bug (Exception→CRITICAL+error). `load_nodes(filepath)` Fail-Fast 5-lớp (list/empty/str/ipaddress.ip_address()/duplicate) + `nodes.json` externalize. `main_loop` thay TaskGroup bằng `asyncio.create_task()` + `asyncio.as_completed()` + `_wrapped_poll` identity-carrying tuple + Reactive Timestamping per-node. `test_load_nodes.py` 8 green. 67 green total, 8.79s. Commit `3cc5bdb`.
 
 ## Đã thay đổi 2026-06-27 (Infra trunk, Day 38)
 
