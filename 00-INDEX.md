@@ -4,7 +4,7 @@
 
 Cập nhật: 2026-06-28.
 
-**Nhật ký Infra mới nhất: `2026-06-28.md` (Day 39, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste chạy qua WSL2 (`wsl.exe -- bash -lc "git clone ... && git log -1 && python3 -m pytest -q"`) — máy Windows host không có Python thật. Không đọc con số ở file này.
+**Nhật ký Infra mới nhất: `2026-06-28-02.md` (Day 40, Phase 1).** Đọc STATE block trong đó để lấy baseline cộng repo URL hiện hành. Baseline xác nhận bằng clone-zero-paste chạy qua WSL2 (`wsl.exe -- bash -lc "git clone ... && git log -1 && python3 -m pytest -q"`) — máy Windows host không có Python thật. Không đọc con số ở file này.
 
 ## Hai track, một vòng cung sự nghiệp
 
@@ -57,6 +57,10 @@ Gộp ba lớp này vào một file sẽ bắt churn của lịch đụng vào k
 - `REFERENCE-ai-security-career-roadmap.md`
 - `ai-security-learning-plan.md`
 - `senior-security-ai-mentor-roadmap.md`
+
+## Đã thay đổi 2026-06-28 (Infra trunk, Day 40)
+
+`parse_control_output(raw_stdout)` tách ra top-level pure function trong `srl_fetcher.py` — stdlib exceptions (ValueError/TypeError/JSONDecodeError), không dùng SRLFetchError. `CONTROL_CMD` module-level constant dùng chung cho cả netmiko và asyncssh. `SRLCliFetcher.fetch_control()` wrap network error → SRLFetchError, bubble parse error. `poll_node` import CONTROL_CMD + parse_control_output, không còn mock dict. `test_srl_fetcher.py` 10 tests (thay 5 cũ). 72 green total, 9.01s. Commit `046257a`.
 
 ## Đã thay đổi 2026-06-28 (Infra trunk, Day 39)
 
